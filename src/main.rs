@@ -56,8 +56,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let raw_org_id = env::var("ORG_ID").ok().unwrap();
     let org_id: &str = raw_org_id.as_str();
 
-    per_days(api_key, org_id).await;
-    per_months(api_key, org_id).await;
+    match per_days(api_key, org_id).await {
+        Err(e) => println!("{:?}", e),
+        _ => (),
+    }
+
+    match per_months(api_key, org_id).await {
+        Err(e) => println!("{:?}", e),
+        _ => (),
+    }
 
     Ok(())
 }
