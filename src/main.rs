@@ -209,7 +209,7 @@ async fn per_months(api_key: &str, org_id: &str) -> Result<(), Box<dyn Error>> {
         last_month = shift_months(last_month, -1);
 
         println!(
-            "\n\x1b[1;93m{} - {} {}\x1b[0m",
+            "\n\x1b[1;93mProjet : {} - {} {}\x1b[0m",
             &list_result["name"].as_str().unwrap(),
             FRENCH_MONTHS[(last_month.month() - 1) as usize],
             last_month.year(),
