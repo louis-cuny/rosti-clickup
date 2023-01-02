@@ -115,7 +115,8 @@ async fn per_months(api_key: &str, org_id: &str) -> Result<(), Box<dyn Error>> {
 
     let mut total: i64 = 0;
     let mut total_billable: i64 = 0;
-    for _ in 1..4 {
+    // TODO: Parse interesting months instead of an arbitrary timeline.
+    for _ in 1..12 {
         let mut endpoint_tracked_time: String = "https://api.clickup.com/api/v2/team/".to_owned();
         endpoint_tracked_time.push_str(org_id);
         endpoint_tracked_time.push_str("/time_entries?start_date=");
@@ -229,7 +230,13 @@ async fn per_months(api_key: &str, org_id: &str) -> Result<(), Box<dyn Error>> {
 async fn per_days(api_key: &str, org_id: &str) -> Result<(), Box<dyn Error>> {
     let now: NaiveDateTime = Utc::now().naive_utc();
     let last_week: u32 = (now - Duration::weeks(1)).iso_week().week();
-    let current_year: i32 = now.year();
+    let mut current_year: i32 = now.year();
+
+    // TODO: Year should be directly taken from last monday's year.
+    if last_week == 52 {
+        current_year = current_year - 1
+    }
+
     let last_monday: NaiveDateTime =
         NaiveDate::from_isoywd(current_year, last_week, Weekday::Mon).and_hms(0, 0, 0);
 
